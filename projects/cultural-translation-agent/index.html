@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Claude 文化翻译 Agent 项目页，展示 Agent 行为设计、Meta-Prompting、测试迭代与跨文化语义翻译。">
+    <title>Claude 文化翻译 Agent｜冯雪扬作品集</title>
+    <style>
+      :root {
+        --bg: #f6fbff;
+        --surface: #ffffff;
+        --surface-blue: #eef7ff;
+        --surface-cool: #f8fbff;
+        --ink: #102033;
+        --muted: #5a6a7f;
+        --line: #c9ddec;
+        --blue: #317bc8;
+        --blue-deep: #174f86;
+        --cyan: #0c9bb5;
+        --shadow: 0 18px 44px rgba(33, 91, 135, 0.12);
+        --max: 1120px;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { max-width: 100%; overflow-x: hidden; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 82% 4%, rgba(64, 153, 217, 0.14), transparent 30%),
+          linear-gradient(180deg, #eef8ff 0%, #f8fcff 42%, #ffffff 100%);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+        line-height: 1.68;
+      }
+      body.locked { overflow: hidden; }
+      a { color: inherit; text-decoration: none; }
+      p { margin: 0; color: var(--muted); }
+      h1, h2, h3 { margin: 0; letter-spacing: 0; line-height: 1.16; }
+      h1 { max-width: 820px; font-size: clamp(38px, 6vw, 66px); }
+      h2 { margin-bottom: 14px; font-size: clamp(26px, 4vw, 42px); }
+      h3 { margin-bottom: 8px; font-size: 20px; }
+      img { display: block; max-width: 100%; height: auto; cursor: zoom-in; }
+      ul { margin: 0; padding-left: 20px; color: var(--muted); }
+      li { margin-bottom: 8px; }
+
+      .page { width: min(var(--max), calc(100vw - 40px)); margin: 0 auto; padding: 26px 0 64px; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+      .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; color: var(--ink); }
+      .mark { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 8px; color: #fff; background: linear-gradient(135deg, var(--blue-deep), #49a8dd); }
+      .nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+      .nav a, .button { border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #46617a; background: rgba(255,255,255,0.78); font-size: 14px; font-weight: 850; }
+      .nav a:hover, .button:hover { color: var(--blue-deep); background: #e4f2ff; }
+      .button.primary { border-color: var(--blue); color: #fff; background: linear-gradient(135deg, #2878bf, #3aa4d8); }
+      .hero, .section, .panel, .card, .image-card { border: 1px solid rgba(201,221,236,0.9); border-radius: 8px; background: rgba(255,255,255,0.86); box-shadow: var(--shadow); }
+      .hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.82fr); gap: 24px; align-items: stretch; padding: 30px; }
+      .eyebrow { margin-bottom: 10px; color: var(--blue-deep); font-size: 13px; font-weight: 950; }
+      .lead { margin-top: 18px; max-width: 760px; color: #43576d; font-size: 18px; font-weight: 650; }
+      .actions, .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+      .mini-label { border: 1px solid rgba(49,123,200,0.16); border-radius: 999px; padding: 7px 10px; color: var(--blue-deep); background: #eef7ff; font-size: 12px; font-weight: 900; }
+      .metric-grid, .grid, .thirds, .flow, .image-grid { display: grid; gap: 14px; }
+      .metric-grid { gap: 12px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .thirds { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .section { margin-top: 24px; padding: 28px; }
+      .panel, .card { padding: 18px; background: var(--surface-cool); box-shadow: none; }
+      .metric { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff; }
+      .metric strong, .card small { display: block; color: var(--blue-deep); font-size: 12px; font-weight: 950; }
+      .metric span { display: block; margin-top: 4px; color: #334a5f; font-weight: 850; }
+      .card small { margin-bottom: 8px; color: var(--cyan); }
+      .flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .step { min-height: 112px; border: 1px solid rgba(49,123,200,0.18); border-radius: 8px; padding: 16px; background: #eef7ff; }
+      .step strong { display: block; color: var(--blue-deep); }
+      .step span { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+      .callout { margin-top: 16px; border: 1px solid rgba(12,155,181,0.22); border-radius: 8px; padding: 16px; color: #315369; background: #edfaff; font-weight: 750; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 720px; border-collapse: collapse; color: #42576c; font-size: 15px; }
+      th, td { border: 1px solid var(--line); padding: 12px; text-align: left; vertical-align: top; }
+      th { color: var(--blue-deep); background: #eef7ff; }
+      .image-card { overflow: hidden; background: #f8fbff; box-shadow: none; }
+      .image-card.hero-shot img { width: 100%; max-height: 380px; object-fit: contain; background: #fff; }
+      .image-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 18px; }
+      .image-grid img { width: 100%; aspect-ratio: 1.58; object-fit: cover; object-position: left top; }
+      .image-caption { border-top: 1px solid rgba(201,221,236,0.72); padding: 12px 14px; color: #52677c; font-size: 13px; font-weight: 800; }
+      .pager { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 24px; }
+      footer { margin-top: 28px; color: var(--muted); font-size: 14px; }
+      .lightbox { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 28px; background: rgba(10,26,42,0.78); }
+      .lightbox.open { display: flex; }
+      .lightbox-content { position: relative; display: grid; gap: 12px; width: min(100%, 980px); max-height: calc(100svh - 56px); }
+      .lightbox img { width: auto; max-width: 100%; max-height: calc(100svh - 132px); margin: 0 auto; border-radius: 8px; background: #fff; cursor: default; }
+      .lightbox-caption { color: #f3f9ff; font-size: 14px; font-weight: 800; text-align: center; }
+      .lightbox-close { position: absolute; top: -16px; right: -16px; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(255,255,255,0.55); border-radius: 999px; color: #fff; background: rgba(12,31,49,0.82); font-size: 24px; cursor: pointer; }
+      @media (max-width: 900px) {
+        .page { width: min(100% - 28px, var(--max)); }
+        .topbar { align-items: flex-start; flex-direction: column; }
+        .hero, .grid, .thirds, .flow, .image-grid { grid-template-columns: 1fr; }
+        .hero, .section { padding: 20px; }
+        h1 { font-size: 40px; }
+        .nav { justify-content: flex-start; }
+        .image-grid img { aspect-ratio: auto; object-fit: contain; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <a class="brand" href="../../index.html"><span class="mark">FX</span><span>返回作品集主页</span></a>
+        <nav class="nav" aria-label="项目导航">
+          <a href="../telegram-translation-bot/index.html">上一项目</a>
+          <a href="#method">方法</a>
+          <a href="#testing">测试</a>
+          <a href="#value">思考</a>
+          <a href="../smart-email-schedule-agent/index.html">下一项目</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <p class="eyebrow">Project 02 / Claude Projects + Agent Design</p>
+            <h1>Claude 文化翻译 Agent</h1>
+            <p class="lead">这个 Agent 聚焦跨文化语义翻译：不只把句子换成另一种语言，而是先判断成语、习语、讽刺、语气和文化语境，再输出更自然的目标语言表达。</p>
+            <div class="actions">
+              <a class="button primary" href="https://claude.ai/share/8763f1f1-13f9-4487-a1bd-3abbbd545d3c" target="_blank" rel="noreferrer">查看 Claude 分享链接</a>
+            </div>
+            <div class="meta-row">
+              <span class="mini-label">Agent 行为设计</span>
+              <span class="mini-label">Meta-Prompting</span>
+              <span class="mini-label">Prompt Engineering</span>
+              <span class="mini-label">跨文化沟通</span>
+            </div>
+          </div>
+          <aside class="image-card hero-shot">
+            <img src="../../assets/portfolio/cultural/chinese-idiom-example.png" alt="Claude 文化翻译 Agent 处理塞翁失马案例截图">
+            <div class="image-caption">效果证据：中文成语“塞翁失马”先被解释为语义，再转为英文与 Hindi 表达。</div>
+          </aside>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Problem Framing</p>
+          <h2>翻译难点不在字面，而在语境</h2>
+          <div class="grid">
+            <article class="card"><small>用户问题</small><h3>普通翻译容易丢失文化含义</h3><p>成语、习语和讽刺表达经常不能逐字翻译。如果只追求词汇对应，目标语言用户可能看懂了字面，却误解了真实语气和意图。</p></article>
+            <article class="card"><small>产品挑战</small><h3>AI 需要稳定的判断路径</h3><p>同一句话可能包含语言、文化、情绪和隐含意图。Agent 的关键不是“会翻译”，而是把判断步骤和输出边界设计清楚。</p></article>
+          </div>
+          <div class="callout">产品判断：跨文化翻译的质量取决于含义识别、语气判断和目标语言表达是否自然。Agent 应先理解语义，再选择表达，而不是逐字替换。</div>
+        </section>
+
+        <section class="section" id="method">
+          <p class="eyebrow">Agent Building Method</p>
+          <h2>从 prompt 到 Agent 行为设计</h2>
+          <div class="flow">
+            <div class="step"><strong>1. Research</strong><span>梳理习语、成语和语气翻译难点。</span></div>
+            <div class="step"><strong>2. Meta-Prompting</strong><span>让 AI 辅助生成 Agent 指令草案。</span></div>
+            <div class="step"><strong>3. Iterate</strong><span>测试、批判、决策并修改规则。</span></div>
+            <div class="step"><strong>4. Deploy</strong><span>沉淀到 Claude Projects，形成可复用 Agent。</span></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Agent Framework</p>
+          <h2>角色、目标、技能、规则与反馈回路</h2>
+          <div class="thirds">
+            <article class="card"><small>角色 / 目标</small><h3>跨文化语义翻译助手</h3><p>目标是保留含义、语气和文化隐含信息，而不是追求逐字对应。</p></article>
+            <article class="card"><small>技能</small><h3>条件判断步骤</h3><p>先检测语言和习语，再识别语气类型，最后按目标语言习惯表达。</p></article>
+            <article class="card"><small>规则 / 反馈</small><h3>约束稳定输出</h3><p>不添加原文没有的信息；通过测试和失败样例持续修订 Agent 指令。</p></article>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Iteration Logic</p>
+          <h2>测试、批判与决策日志</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>环节</th><th>做法</th><th>产品意义</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>测试</td><td>使用基础习语、多重习语、讽刺表达和多语言输入观察输出。</td><td>用可复现样例判断 Agent 是否稳定，而不是只看一次结果。</td></tr>
+                <tr><td>批判</td><td>让 AI 直接指出指令中的模糊规则、缺失边界和可能失败场景。</td><td>把 prompt 迭代从“感觉不好”变成可解释的问题清单。</td></tr>
+                <tr><td>决策</td><td>保留有效规则，修改造成不一致输出的规则。</td><td>体现产品迭代中的取舍，而不是无边界堆功能。</td></tr>
+                <tr><td>部署</td><td>将最终指令放入 Claude Project。</td><td>让一次性对话沉淀为可复用 Agent。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="testing">
+          <p class="eyebrow">Evidence</p>
+          <h2>效果样例</h2>
+          <div class="image-grid">
+            <article class="image-card">
+              <img src="../../assets/portfolio/cultural/chinese-idiom-example.png" alt="中文成语塞翁失马的跨文化语义翻译截图">
+              <div class="image-caption">中文成语：解释“塞翁失马”的文化含义，再映射为英文和 Hindi 表达。</div>
+            </article>
+            <article class="image-card">
+              <img src="../../assets/portfolio/cultural/english-sarcasm-example.png" alt="英文讽刺表达 when pigs fly 的跨文化语义翻译截图">
+              <div class="image-caption">英文讽刺表达：识别“不可能发生”的语气，再转为简体中文和 Hindi。</div>
+            </article>
+            <article class="image-card">
+              <img src="../../assets/portfolio/cultural/hindi-idiom-example.png" alt="Hindi 成语 नौ दो ग्यारह होना 的跨文化语义翻译截图">
+              <div class="image-caption">Hindi 成语：处理 Devanagari 输入，并解释为快速逃跑或突然消失。</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="value">
+          <p class="eyebrow">Product Thinking</p>
+          <h2>用户价值与风险边界</h2>
+          <div class="grid">
+            <article class="card">
+              <small>可转化场景</small>
+              <ul>
+                <li>留学生跨文化沟通辅助。</li>
+                <li>国际团队邮件、聊天和文档表达润色。</li>
+                <li>客服与运营场景中的多语言语气适配。</li>
+                <li>品牌本地化内容审核与文化风险提示。</li>
+              </ul>
+            </article>
+            <article class="card">
+              <small>Responsible AI</small>
+              <ul>
+                <li>不把输出作为法律、医疗、移民等高风险文本的最终译文。</li>
+                <li>遇到含义不确定或文化语境不足时，应提示不确定性。</li>
+                <li>避免添加原文没有的事实、评价或身份判断。</li>
+                <li>对冒犯性、歧视性或敏感表达保留人工复核空间。</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="项目翻页">
+          <a class="button" href="../telegram-translation-bot/index.html">上一项目：Telegram AI 翻译 Bot</a>
+          <a class="button primary" href="../smart-email-schedule-agent/index.html">下一项目：智能邮件日程助手 Agent</a>
+        </nav>
+      </main>
+      <footer>冯雪扬｜AI产品原型与Agent设计作品集</footer>
+    </div>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-label="图片放大预览" data-lightbox>
+      <div class="lightbox-content"><button class="lightbox-close" type="button" aria-label="关闭图片预览" data-lightbox-close>×</button><img alt="" data-lightbox-image><p class="lightbox-caption" data-lightbox-caption></p></div>
+    </div>
+    <script>
+      const lightbox = document.querySelector("[data-lightbox]");
+      const lightboxImage = document.querySelector("[data-lightbox-image]");
+      const lightboxCaption = document.querySelector("[data-lightbox-caption]");
+      const lightboxClose = document.querySelector("[data-lightbox-close]");
+      const closeLightbox = () => { lightbox.classList.remove("open"); document.body.classList.remove("locked"); lightboxImage.removeAttribute("src"); };
+      document.querySelectorAll("main img").forEach((image) => {
+        image.setAttribute("tabindex", "0");
+        image.setAttribute("role", "button");
+        const open = () => { lightboxImage.src = image.currentSrc || image.src; lightboxImage.alt = image.alt || ""; lightboxCaption.textContent = image.alt || ""; lightbox.classList.add("open"); document.body.classList.add("locked"); lightboxClose.focus(); };
+        image.addEventListener("click", open);
+        image.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); open(); } });
+      });
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (event) => { if (event.target === lightbox) closeLightbox(); });
+      document.addEventListener("keydown", (event) => { if (event.key === "Escape" && lightbox.classList.contains("open")) closeLightbox(); });
+    </script>
+  </body>
+</html>

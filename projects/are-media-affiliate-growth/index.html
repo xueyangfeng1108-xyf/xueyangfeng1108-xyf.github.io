@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AI驱动Are Media联盟营收增长项目页，展示用户旅程、AI 原型、实施路径与风险矩阵。">
+    <title>AI驱动Are Media联盟营收增长项目｜冯雪扬作品集</title>
+    <style>
+      :root {
+        --surface: #ffffff;
+        --surface-cool: #f8fbff;
+        --ink: #102033;
+        --muted: #5a6a7f;
+        --line: #c9ddec;
+        --blue: #317bc8;
+        --blue-deep: #174f86;
+        --cyan: #0c9bb5;
+        --shadow: 0 18px 44px rgba(33, 91, 135, 0.12);
+        --max: 1120px;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { max-width: 100%; overflow-x: hidden; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 82% 4%, rgba(64, 153, 217, 0.14), transparent 30%),
+          linear-gradient(180deg, #eef8ff 0%, #f8fcff 42%, #ffffff 100%);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+        line-height: 1.68;
+      }
+      body.locked { overflow: hidden; }
+      a { color: inherit; text-decoration: none; }
+      p { margin: 0; color: var(--muted); }
+      h1, h2, h3 { margin: 0; letter-spacing: 0; line-height: 1.16; }
+      h1 { max-width: 820px; font-size: clamp(38px, 6vw, 66px); }
+      h2 { margin-bottom: 14px; font-size: clamp(26px, 4vw, 42px); }
+      h3 { margin-bottom: 8px; font-size: 20px; }
+      img { display: block; max-width: 100%; height: auto; cursor: zoom-in; }
+      ul { margin: 0; padding-left: 20px; color: var(--muted); }
+      li { margin-bottom: 8px; }
+
+      .page { width: min(var(--max), calc(100vw - 40px)); margin: 0 auto; padding: 26px 0 64px; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+      .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; color: var(--ink); }
+      .mark { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 8px; color: #fff; background: linear-gradient(135deg, var(--blue-deep), #49a8dd); }
+      .nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+      .nav a, .button { border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #46617a; background: rgba(255,255,255,0.78); font-size: 14px; font-weight: 850; }
+      .nav a:hover, .button:hover { color: var(--blue-deep); background: #e4f2ff; }
+      .button.primary { border-color: var(--blue); color: #fff; background: linear-gradient(135deg, #2878bf, #3aa4d8); }
+      .hero, .section, .panel, .card, .image-card { border: 1px solid rgba(201,221,236,0.9); border-radius: 8px; background: rgba(255,255,255,0.86); box-shadow: var(--shadow); }
+      .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(350px, 0.95fr); gap: 24px; align-items: stretch; padding: 30px; }
+      .eyebrow { margin-bottom: 10px; color: var(--blue-deep); font-size: 13px; font-weight: 950; }
+      .lead { margin-top: 18px; max-width: 760px; color: #43576d; font-size: 18px; font-weight: 650; }
+      .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+      .mini-label { border: 1px solid rgba(49,123,200,0.16); border-radius: 999px; padding: 7px 10px; color: var(--blue-deep); background: #eef7ff; font-size: 12px; font-weight: 900; }
+      .metric-grid, .grid, .thirds, .flow, .image-grid { display: grid; gap: 14px; }
+      .metric-grid { gap: 12px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .thirds { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .section { margin-top: 24px; padding: 28px; }
+      .panel, .card { padding: 18px; background: var(--surface-cool); box-shadow: none; }
+      .metric { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff; }
+      .metric strong, .card small { display: block; color: var(--blue-deep); font-size: 12px; font-weight: 950; }
+      .metric span { display: block; margin-top: 4px; color: #334a5f; font-weight: 850; }
+      .card small { margin-bottom: 8px; color: var(--cyan); }
+      .flow { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+      .step { min-height: 112px; border: 1px solid rgba(49,123,200,0.18); border-radius: 8px; padding: 14px; background: #eef7ff; }
+      .step strong { display: block; color: var(--blue-deep); }
+      .step span { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; }
+      .callout { margin-top: 16px; border: 1px solid rgba(12,155,181,0.22); border-radius: 8px; padding: 16px; color: #315369; background: #edfaff; font-weight: 750; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 720px; border-collapse: collapse; color: #42576c; font-size: 15px; }
+      th, td { border: 1px solid var(--line); padding: 12px; text-align: left; vertical-align: top; }
+      th { color: var(--blue-deep); background: #eef7ff; }
+      .image-card { overflow: hidden; background: #f8fbff; box-shadow: none; }
+      .image-card.hero-shot img { width: 100%; max-height: 380px; object-fit: contain; background: #fff; }
+      .image-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 18px; }
+      .image-grid img { width: 100%; aspect-ratio: 1.58; object-fit: cover; object-position: left top; }
+      .image-caption { border-top: 1px solid rgba(201,221,236,0.72); padding: 12px 14px; color: #52677c; font-size: 13px; font-weight: 800; }
+      .pager { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 24px; }
+      footer { margin-top: 28px; color: var(--muted); font-size: 14px; }
+      .lightbox { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 28px; background: rgba(10,26,42,0.78); }
+      .lightbox.open { display: flex; }
+      .lightbox-content { position: relative; display: grid; gap: 12px; width: min(100%, 980px); max-height: calc(100svh - 56px); }
+      .lightbox img { width: auto; max-width: 100%; max-height: calc(100svh - 132px); margin: 0 auto; border-radius: 8px; background: #fff; cursor: default; }
+      .lightbox-caption { color: #f3f9ff; font-size: 14px; font-weight: 800; text-align: center; }
+      .lightbox-close { position: absolute; top: -16px; right: -16px; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(255,255,255,0.55); border-radius: 999px; color: #fff; background: rgba(12,31,49,0.82); font-size: 24px; cursor: pointer; }
+      @media (max-width: 900px) {
+        .page { width: min(100% - 28px, var(--max)); }
+        .topbar { align-items: flex-start; flex-direction: column; }
+        .hero, .grid, .thirds, .flow, .image-grid { grid-template-columns: 1fr; }
+        .hero, .section { padding: 20px; }
+        h1 { font-size: 40px; }
+        .nav { justify-content: flex-start; }
+        .image-grid img { aspect-ratio: auto; object-fit: contain; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <a class="brand" href="../../index.html"><span class="mark">FX</span><span>返回作品集主页</span></a>
+        <nav class="nav" aria-label="项目导航">
+          <a href="../smart-email-schedule-agent/index.html">上一项目</a>
+          <a href="#background">背景</a>
+          <a href="#journey">用户旅程</a>
+          <a href="#risk">风险</a>
+          <a href="../telegram-translation-bot/index.html">回到项目 01</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <p class="eyebrow">Project 04 / 2024 / GenAI + 用户旅程 + 联盟营收</p>
+            <h1>AI驱动Are Media联盟营收增长项目</h1>
+            <p class="lead">这是一个围绕澳大利亚营销公司 Are Media 的 GenAI 商业应用方案。项目从传统媒体收入向联盟营收转型的背景出发，基于用户旅程图设计 AI 视觉化原型、购买链路和风险矩阵。</p>
+            <div class="meta-row">
+              <span class="mini-label">项目背景</span>
+              <span class="mini-label">用户旅程图</span>
+              <span class="mini-label">AI 视觉化原型</span>
+              <span class="mini-label">合规与风险</span>
+            </div>
+          </div>
+          <aside class="panel">
+            <div class="metric-grid">
+              <div class="metric"><strong>项目时间</strong><span>2024</span></div>
+              <div class="metric"><strong>项目主题</strong><span>GenAI 驱动内容互动与联盟营收增长</span></div>
+              <div class="metric"><strong>核心交付物</strong><span>增长方案、用户旅程图、AI 视觉化原型、实施路径与风险矩阵</span></div>
+              <div class="metric"><strong>展示重点</strong><span>用户思维、产品链路、AI 风险意识</span></div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section" id="background">
+          <p class="eyebrow">Project Background</p>
+          <h2>从内容浏览到购买决策的 AI 机会</h2>
+          <div class="grid">
+            <article class="card"><small>业务背景</small><h3>传统媒体需要新的收入增长路径</h3><p>项目关注传统媒体广告与内容收入压力下，如何通过联盟营收连接内容、商品发现和购买转化，让内容平台从“被阅读”走向“辅助决策”。</p></article>
+            <article class="card"><small>产品机会</small><h3>GenAI 可以缩短灵感到购买的距离</h3><p>家居内容用户往往先寻找风格灵感，再逐步比较商品。AI 视觉化工具可以把用户的模糊偏好转成可见方案，并将其连接到商品购买链接。</p></article>
+          </div>
+          <div class="callout">产品判断：这个项目不是单纯给内容加 AI，而是重新设计用户从“看家居灵感”到“选择商品”的路径，让 AI 介入高犹豫、高想象成本的决策环节。</div>
+        </section>
+
+        <section class="section" id="journey">
+          <p class="eyebrow">User Journey</p>
+          <h2>Helen 的家居灵感到购买链路</h2>
+          <div class="flow">
+            <div class="step"><strong>搜索趋势</strong><span>搜索 2024 家居设计趋势。</span></div>
+            <div class="step"><strong>阅读内容</strong><span>进入 Home Beautiful 相关文章。</span></div>
+            <div class="step"><strong>输入 Prompt</strong><span>描述想要的家居风格。</span></div>
+            <div class="step"><strong>AI 视觉化</strong><span>看到生成的空间效果。</span></div>
+            <div class="step"><strong>定制结果</strong><span>调整家具和装饰选项。</span></div>
+            <div class="step"><strong>点击链接</strong><span>进入联盟商家页面。</span></div>
+            <div class="step"><strong>完成购买</strong><span>购买被推荐的家居产品。</span></div>
+          </div>
+          <div class="image-card" style="margin-top:18px;">
+            <img src="../../assets/portfolio/are-media/user-journey-map.png" alt="Are Media 项目用户旅程图">
+            <div class="image-caption">用户旅程图：从搜索家居趋势、阅读内容、输入 Prompt、查看 AI 结果到点击购买链接。</div>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Solution Design</p>
+          <h2>AI 视觉化原型与增长链路</h2>
+          <div class="thirds">
+            <article class="card"><small>输入</small><h3>Prompt 引导</h3><p>用户通过自然语言描述空间风格、房间类型和偏好，降低从灵感到方案表达的门槛。</p></article>
+            <article class="card"><small>生成</small><h3>AI 视觉化结果</h3><p>将文章内容和用户偏好转为可视化家居方案，让用户更容易判断风格是否适合自己。</p></article>
+            <article class="card"><small>转化</small><h3>联盟购买链接</h3><p>把视觉结果中的家具与装饰连接到相关商品，缩短从内容消费到商品决策的路径。</p></article>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Project Deliverables</p>
+          <h2>核心交付物</h2>
+          <div class="image-grid">
+            <article class="image-card">
+              <img src="../../assets/portfolio/are-media/user-journey-map.png" alt="Are Media 用户旅程图截图">
+              <div class="image-caption">用户旅程与触点：识别 AI 适合介入的关键节点。</div>
+            </article>
+            <article class="image-card">
+              <img src="../../assets/portfolio/are-media/prototype-feedback.png" alt="Are Media AI 原型与反馈循环截图">
+              <div class="image-caption">AI 原型与反馈循环：展示从 Prompt 到视觉化结果的交互思路。</div>
+            </article>
+            <article class="image-card">
+              <img src="../../assets/portfolio/are-media/risk-matrix.png" alt="Are Media 风险矩阵截图">
+              <div class="image-caption">风险矩阵：提前识别伦理、法律、商业和内容质量风险。</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="risk">
+          <p class="eyebrow">Responsible AI & Risk</p>
+          <h2>AI 合规与风险考虑</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>风险类型</th><th>可能问题</th><th>产品应对</th></tr></thead>
+              <tbody>
+                <tr><td>版权 / IP</td><td>生成图像可能借鉴受版权保护的内容或品牌素材。</td><td>建立素材授权规则、生成结果审核和来源说明机制。</td></tr>
+                <tr><td>透明度</td><td>用户可能误以为 AI 生成内容是人工编辑或真实空间照片。</td><td>明确标注 AI 生成结果，并解释推荐逻辑和商业链接属性。</td></tr>
+                <tr><td>用户信任</td><td>不准确的视觉化或商品推荐可能降低平台可信度。</td><td>加入人工审核、高置信度展示和用户反馈入口。</td></tr>
+                <tr><td>品牌安全</td><td>生成内容可能与 Are Media 的编辑调性或合作品牌不一致。</td><td>建立品牌风格规范、禁用词和输出审核边界。</td></tr>
+                <tr><td>商业依赖</td><td>过度依赖 AI 推荐可能牺牲编辑独立性或用户体验。</td><td>保持内容价值优先，将商业推荐作为辅助路径而非唯一目标。</td></tr>
+                <tr><td>实施成本</td><td>模型调用、审核和维护会带来持续成本。</td><td>从低保真原型、小范围测试和成本估算开始迭代。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Product Thinking</p>
+          <h2>产品思考</h2>
+          <div class="grid">
+            <article class="card"><small>用户思维</small><ul><li>用户不是直接想买商品，而是先想象“这个风格是否适合我的家”。</li><li>AI 视觉化降低了想象成本，也给用户一个继续探索的理由。</li><li>用户旅程图帮助判断 AI 应该出现在哪个触点，而不是哪里都加 AI。</li></ul></article>
+            <article class="card"><small>商业思维</small><ul><li>联盟营收增长依赖内容、推荐和购买链路的协同。</li><li>AI 方案需要同时考虑用户体验、品牌信任和商业转化。</li><li>风险矩阵是产品方案的一部分，不是上线前才补的合规检查。</li></ul></article>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="项目翻页">
+          <a class="button" href="../smart-email-schedule-agent/index.html">上一项目：智能邮件日程助手 Agent</a>
+          <a class="button primary" href="../../index.html#projects">返回项目列表</a>
+        </nav>
+      </main>
+      <footer>冯雪扬｜AI产品原型与Agent设计作品集</footer>
+    </div>
+    <div class="lightbox" role="dialog" aria-modal="true" aria-label="图片放大预览" data-lightbox>
+      <div class="lightbox-content"><button class="lightbox-close" type="button" aria-label="关闭图片预览" data-lightbox-close>×</button><img alt="" data-lightbox-image><p class="lightbox-caption" data-lightbox-caption></p></div>
+    </div>
+    <script>
+      const lightbox = document.querySelector("[data-lightbox]");
+      const lightboxImage = document.querySelector("[data-lightbox-image]");
+      const lightboxCaption = document.querySelector("[data-lightbox-caption]");
+      const lightboxClose = document.querySelector("[data-lightbox-close]");
+      const closeLightbox = () => { lightbox.classList.remove("open"); document.body.classList.remove("locked"); lightboxImage.removeAttribute("src"); };
+      document.querySelectorAll("main img").forEach((image) => {
+        image.setAttribute("tabindex", "0");
+        image.setAttribute("role", "button");
+        const open = () => { lightboxImage.src = image.currentSrc || image.src; lightboxImage.alt = image.alt || ""; lightboxCaption.textContent = image.alt || ""; lightbox.classList.add("open"); document.body.classList.add("locked"); lightboxClose.focus(); };
+        image.addEventListener("click", open);
+        image.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); open(); } });
+      });
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (event) => { if (event.target === lightbox) closeLightbox(); });
+      document.addEventListener("keydown", (event) => { if (event.key === "Escape" && lightbox.classList.contains("open")) closeLightbox(); });
+    </script>
+  </body>
+</html>

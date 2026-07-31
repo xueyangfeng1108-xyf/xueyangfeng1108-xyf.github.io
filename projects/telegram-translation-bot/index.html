@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Telegram AI 翻译 Bot 项目页，展示 n8n、Telegram Bot API 与 Gemini 的 Agent 工作流设计。">
+    <title>Telegram AI 翻译 Bot｜冯雪扬作品集</title>
+    <style>
+      :root {
+        --bg: #f6fbff;
+        --surface: #ffffff;
+        --surface-blue: #eef7ff;
+        --surface-cool: #f8fbff;
+        --ink: #102033;
+        --muted: #5a6a7f;
+        --line: #c9ddec;
+        --blue: #317bc8;
+        --blue-deep: #174f86;
+        --cyan: #0c9bb5;
+        --shadow: 0 18px 44px rgba(33, 91, 135, 0.12);
+        --max: 1120px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body { max-width: 100%; overflow-x: hidden; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 82% 4%, rgba(64, 153, 217, 0.14), transparent 30%),
+          linear-gradient(180deg, #eef8ff 0%, #f8fcff 42%, #ffffff 100%);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+        line-height: 1.68;
+      }
+
+      body.locked { overflow: hidden; }
+
+      a { color: inherit; text-decoration: none; }
+      p { margin: 0; color: var(--muted); }
+      h1, h2, h3 { margin: 0; letter-spacing: 0; line-height: 1.16; }
+      h1 { max-width: 820px; font-size: clamp(38px, 6vw, 66px); }
+      h2 { margin-bottom: 14px; font-size: clamp(26px, 4vw, 42px); }
+      h3 { margin-bottom: 8px; font-size: 20px; }
+      img { display: block; max-width: 100%; height: auto; cursor: zoom-in; }
+      ul { margin: 0; padding-left: 20px; color: var(--muted); }
+      li { margin-bottom: 8px; }
+      code { overflow-wrap: anywhere; color: var(--blue-deep); font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.95em; }
+
+      .page { width: min(var(--max), calc(100vw - 40px)); margin: 0 auto; padding: 26px 0 64px; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+      .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; color: var(--ink); }
+      .mark { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 8px; color: #fff; background: linear-gradient(135deg, var(--blue-deep), #49a8dd); }
+      .nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+      .nav a, .button { border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #46617a; background: rgba(255,255,255,0.78); font-size: 14px; font-weight: 850; }
+      .nav a:hover, .button:hover { color: var(--blue-deep); background: #e4f2ff; }
+      .button.primary { border-color: var(--blue); color: #fff; background: linear-gradient(135deg, #2878bf, #3aa4d8); }
+
+      .hero, .section, .panel, .card, .image-card {
+        border: 1px solid rgba(201, 221, 236, 0.9);
+        border-radius: 8px;
+        background: rgba(255,255,255,0.86);
+        box-shadow: var(--shadow);
+      }
+
+      .hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.72fr); gap: 24px; align-items: stretch; padding: 30px; }
+      .eyebrow { margin-bottom: 10px; color: var(--blue-deep); font-size: 13px; font-weight: 950; }
+      .lead { margin-top: 18px; max-width: 760px; color: #43576d; font-size: 18px; font-weight: 650; }
+      .actions, .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+      .mini-label { border: 1px solid rgba(49,123,200,0.16); border-radius: 999px; padding: 7px 10px; color: var(--blue-deep); background: #eef7ff; font-size: 12px; font-weight: 900; }
+      .metric-grid, .grid, .thirds, .flow, .image-grid { display: grid; gap: 14px; }
+      .metric-grid { gap: 12px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .thirds { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .section { margin-top: 24px; padding: 28px; }
+      .panel, .card { padding: 18px; background: var(--surface-cool); box-shadow: none; }
+      .metric { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff; }
+      .metric strong, .card small { display: block; color: var(--blue-deep); font-size: 12px; font-weight: 950; }
+      .metric span { display: block; margin-top: 4px; color: #334a5f; font-weight: 850; }
+      .card small { margin-bottom: 8px; color: var(--cyan); }
+      .flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .step { min-height: 112px; border: 1px solid rgba(49,123,200,0.18); border-radius: 8px; padding: 16px; background: #eef7ff; }
+      .step strong { display: block; color: var(--blue-deep); }
+      .step span { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+      .callout { margin-top: 16px; border: 1px solid rgba(12,155,181,0.22); border-radius: 8px; padding: 16px; color: #315369; background: #edfaff; font-weight: 750; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 720px; border-collapse: collapse; color: #42576c; font-size: 15px; }
+      th, td { border: 1px solid var(--line); padding: 12px; text-align: left; vertical-align: top; }
+      th { color: var(--blue-deep); background: #eef7ff; }
+      .image-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 18px; }
+      .image-card { overflow: hidden; background: #f8fbff; box-shadow: none; }
+      .image-card.hero-shot img { width: auto; max-width: min(100%, 360px); max-height: 440px; margin: 0 auto; object-fit: contain; }
+      .image-card.proof img { width: auto; max-width: min(300px, 84%); max-height: 500px; margin: 18px auto 0; object-fit: contain; border-radius: 8px; box-shadow: 0 14px 34px rgba(15, 35, 55, 0.14); }
+      .image-caption { border-top: 1px solid rgba(201,221,236,0.72); padding: 12px 14px; color: #52677c; font-size: 13px; font-weight: 800; }
+      .pager { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 24px; }
+      footer { margin-top: 28px; color: var(--muted); font-size: 14px; }
+
+      .lightbox { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 28px; background: rgba(10,26,42,0.78); }
+      .lightbox.open { display: flex; }
+      .lightbox-content { position: relative; display: grid; gap: 12px; width: min(100%, 980px); max-height: calc(100svh - 56px); }
+      .lightbox img { width: auto; max-width: 100%; max-height: calc(100svh - 132px); margin: 0 auto; border-radius: 8px; background: #fff; cursor: default; }
+      .lightbox-caption { color: #f3f9ff; font-size: 14px; font-weight: 800; text-align: center; }
+      .lightbox-close { position: absolute; top: -16px; right: -16px; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(255,255,255,0.55); border-radius: 999px; color: #fff; background: rgba(12,31,49,0.82); font-size: 24px; cursor: pointer; }
+
+      @media (max-width: 900px) {
+        .page { width: min(100% - 28px, var(--max)); }
+        .topbar { align-items: flex-start; flex-direction: column; }
+        .hero, .grid, .thirds, .flow, .image-grid { grid-template-columns: 1fr; }
+        .hero, .section { padding: 20px; }
+        h1 { font-size: 40px; }
+        .image-card.hero-shot img, .image-card.proof img { max-width: min(100%, 310px); }
+        .nav { justify-content: flex-start; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <a class="brand" href="../../index.html"><span class="mark">FX</span><span>返回作品集主页</span></a>
+        <nav class="nav" aria-label="项目导航">
+          <a href="#problem">问题</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#testing">测试</a>
+          <a href="#value">思考</a>
+          <a href="../cultural-translation-agent/index.html">下一项目</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <p class="eyebrow">Project 01 / n8n + Telegram + Gemini</p>
+            <h1>Telegram AI 翻译 Bot</h1>
+            <p class="lead">将跨文化翻译 Agent 接入 Telegram 聊天场景，让用户直接在熟悉的聊天界面里发送中文或英文消息，并收到自动翻译、语气判断和习语处理结果。</p>
+            <div class="meta-row">
+              <span class="mini-label">Bot 原型</span>
+              <span class="mini-label">Workflow 自动化</span>
+              <span class="mini-label">Prompt 规则</span>
+              <span class="mini-label">边界测试</span>
+            </div>
+          </div>
+          <aside class="image-card hero-shot">
+            <img src="../../assets/portfolio/telegram/telegram-hero-slang-idiom.jpg" alt="Telegram 翻译 Bot 网络用语与中文成语翻译效果截图">
+            <div class="image-caption">效果证据：网络用语与中文成语被转化为自然表达，并输出语气与习语判断。</div>
+          </aside>
+        </section>
+
+        <section class="section" id="problem">
+          <p class="eyebrow">Problem Framing</p>
+          <h2>把翻译能力放回真实聊天场景</h2>
+          <div class="grid">
+            <article class="card">
+              <small>用户问题</small>
+              <h3>翻译工具和聊天场景割裂</h3>
+              <p>用户在聊天中遇到外语、中文网络用语或职场习语时，通常需要复制到另一个翻译工具，再切回聊天窗口。这个过程打断沟通，也容易丢失上下文。</p>
+            </article>
+            <article class="card">
+              <small>产品挑战</small>
+              <h3>翻译不只是语言转换</h3>
+              <p>中文和英文里的习语、成语、讽刺、玩笑和无奈语气都不能逐字处理。Bot 需要先判断语言和含义，再决定目标语言中的自然表达。</p>
+            </article>
+          </div>
+          <div class="callout">产品判断：聊天 Bot 的价值不是“多一个翻译入口”，而是降低切换成本，并让 AI 在用户原有行为流里完成判断、翻译和自动回复。</div>
+        </section>
+
+        <section class="section" id="workflow">
+          <p class="eyebrow">Workflow Architecture</p>
+          <h2>Trigger → Logic → Action 三段式工作流</h2>
+          <div class="flow">
+            <div class="step"><strong>1. Telegram 消息</strong><span>用户向 Bot 发送中文或英文消息。</span></div>
+            <div class="step"><strong>2. Telegram Trigger</strong><span>n8n 接收消息文本、发送者 chat ID 和元数据。</span></div>
+            <div class="step"><strong>3. AI Agent + Gemini</strong><span>读取 <code>{{ $json.message.text }}</code>，按系统规则翻译。</span></div>
+            <div class="step"><strong>4. Telegram 自动回复</strong><span>通过 chat ID 将 <code>{{ $json.output }}</code> 回传给正确用户。</span></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Integration Detail</p>
+          <h2>关键配置与产品意图</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>模块</th><th>关键配置</th><th>设计意图</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Telegram Trigger</td><td>监听 Message 类型输入。</td><td>只处理文字消息，避免图片、文件等非目标输入干扰原型测试。</td></tr>
+                <tr><td>AI Agent + Gemini</td><td>用户消息字段映射为 <code>{{ $json.message.text }}</code>。</td><td>保证模型处理真实用户输入，而不是空 prompt 或测试文本。</td></tr>
+                <tr><td>系统规则</td><td>先识别语言，再判断习语/成语和语气，最后输出目标语言。</td><td>把翻译任务拆成可解释的 Agent 行为步骤。</td></tr>
+                <tr><td>Send Message</td><td>chat ID 来自触发节点，回复内容来自上一步输出。</td><td>确保多人使用时，回复回到对应发送者，而不是固定账号。</td></tr>
+                <tr><td>发布与运行</td><td>workflow 发布后由 n8n 云端运行。</td><td>Bot 不依赖本地窗口在线，更接近可分享的产品原型。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <p class="eyebrow">Agent Rules</p>
+          <h2>翻译 Agent 行为规则</h2>
+          <div class="thirds">
+            <article class="card"><small>语言判断</small><h3>中英双向翻译</h3><p>中文输入翻译为英文，英文输入翻译为简体中文；遇到非中英文输入时给出支持范围提示。</p></article>
+            <article class="card"><small>习语 / 成语</small><h3>先理解含义再翻译</h3><p>把 yyds、绝绝子、画大饼、push came to shove 等表达当作非字面语言处理。</p></article>
+            <article class="card"><small>语气保留</small><h3>输出可被评估</h3><p>在结果中标注语气和是否包含习语，方便观察模型是否理解了真实情绪。</p></article>
+          </div>
+        </section>
+
+        <section class="section" id="testing">
+          <p class="eyebrow">Testing Evidence</p>
+          <h2>从正常输入到边界输入的测试设计</h2>
+          <div class="image-grid">
+            <figure class="image-card proof">
+              <img src="../../assets/portfolio/telegram/telegram-basic-idiom-flow.jpg" alt="Telegram Bot 基础问候与英文习语翻译效果截图">
+              <figcaption class="image-caption">基础翻译与英文习语：验证日常问候、英文会议请求和英文习语能否返回正确目标语言、语气与习语判断。</figcaption>
+            </figure>
+            <figure class="image-card proof">
+              <img src="../../assets/portfolio/telegram/telegram-long-idiom-flow.jpg" alt="Telegram Bot 中文成语与长文本多习语翻译效果截图">
+              <figcaption class="image-caption">中文成语与长文本多习语：验证 Bot 是否能处理“大意失荆州”和多重英文习语长句。</figcaption>
+            </figure>
+            <figure class="image-card proof">
+              <img src="../../assets/portfolio/telegram/telegram-slang-idiom-flow.jpg" alt="Telegram Bot 网络用语、职场习语与中文口语翻译效果截图">
+              <figcaption class="image-caption">网络用语与职场习语：验证 yyds、绝绝子、画大饼、竹篓打水一场空等非直译表达。</figcaption>
+            </figure>
+          </div>
+          <div class="callout">测试思路：先验证主路径可用，再主动寻找系统边界。第三语言、混合语言、网络用语和多习语长句都属于需要提前发现的异常输入。</div>
+        </section>
+
+        <section class="section" id="value">
+          <p class="eyebrow">Product Thinking</p>
+          <h2>产品价值与下一步</h2>
+          <div class="grid">
+            <article class="card">
+              <small>用户价值</small>
+              <ul>
+                <li>降低翻译工具和聊天工具之间的切换成本。</li>
+                <li>让习语、成语和语气判断显性化，输出更容易评估。</li>
+                <li>Bot 形态适合朋友、同学或小团队快速试用。</li>
+              </ul>
+            </article>
+            <article class="card">
+              <small>下一步优化</small>
+              <ul>
+                <li>增加语言选择和用户偏好记忆。</li>
+                <li>加入反馈按钮，用“翻译准确 / 语气不自然 / 习语错误”沉淀测试数据。</li>
+                <li>记录失败输入，形成 prompt 迭代日志。</li>
+                <li>对敏感、冒犯或高风险文本增加人工复核提醒。</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <nav class="pager" aria-label="项目翻页">
+          <a class="button" href="../../index.html#projects">返回项目列表</a>
+          <a class="button primary" href="../cultural-translation-agent/index.html">下一项目：Claude 文化翻译 Agent</a>
+        </nav>
+      </main>
+
+      <footer>冯雪扬｜AI产品原型与Agent设计作品集</footer>
+    </div>
+
+    <div class="lightbox" role="dialog" aria-modal="true" aria-label="图片放大预览" data-lightbox>
+      <div class="lightbox-content">
+        <button class="lightbox-close" type="button" aria-label="关闭图片预览" data-lightbox-close>×</button>
+        <img alt="" data-lightbox-image>
+        <p class="lightbox-caption" data-lightbox-caption></p>
+      </div>
+    </div>
+
+    <script>
+      const lightbox = document.querySelector("[data-lightbox]");
+      const lightboxImage = document.querySelector("[data-lightbox-image]");
+      const lightboxCaption = document.querySelector("[data-lightbox-caption]");
+      const lightboxClose = document.querySelector("[data-lightbox-close]");
+      const closeLightbox = () => {
+        lightbox.classList.remove("open");
+        document.body.classList.remove("locked");
+        lightboxImage.removeAttribute("src");
+      };
+      document.querySelectorAll("main img").forEach((image) => {
+        image.setAttribute("tabindex", "0");
+        image.setAttribute("role", "button");
+        const open = () => {
+          lightboxImage.src = image.currentSrc || image.src;
+          lightboxImage.alt = image.alt || "";
+          lightboxCaption.textContent = image.alt || "";
+          lightbox.classList.add("open");
+          document.body.classList.add("locked");
+          lightboxClose.focus();
+        };
+        image.addEventListener("click", open);
+        image.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            open();
+          }
+        });
+      });
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
+      });
+    </script>
+  </body>
+</html>
